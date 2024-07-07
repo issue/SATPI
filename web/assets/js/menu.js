@@ -3,7 +3,7 @@ function buildmenu() {
 	menu += "<nav class=\"navbar navbar-expand-md navbar-dark fixed-top bg-dark\">";
 	menu += "<div class=\"container-fluid\">";
 	menu +=   "<a class=\"navbar-brand\" href=\"https://github.com/Barracuda09/SATPI\">SatPI</a>";
-	menu +=   "<button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#SatPINavbar\">";
+	menu +=   "<button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#SatPINavbar\">";
 	menu +=     "<span class=\"navbar-toggler-icon\"></span>";
 	menu +=   "</button>";
 	menu +=   "<div class=\"collapse navbar-collapse\" id=\"SatPINavbar\">";
