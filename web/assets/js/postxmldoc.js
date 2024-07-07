@@ -12,7 +12,7 @@ function postData(filename, data) {
 	xmlhttp_post.onreadystatechange = function () {
 		if (xmlhttp_post.readyState === 4) {
 			if (xmlhttp_post.status == 200 && xmlhttp_post.status < 300) {
-				alert("This is strange, should not happen");
+				showModalAlert("This is strange, should not happen");
 			}
 		}
 	}

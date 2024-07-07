@@ -52,3 +52,9 @@ function getColorMode() {
 		document.documentElement.setAttribute('data-bs-theme','light') //default to light theme
 	}
 }
+
+function showModalAlert(msj) {
+	alertModal = $('<div id="alertModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><h4 id="alertModalTitle" class="modal-title">Alert</h4></div><div class="modal-body"><p></p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button></div></div></div></div>');
+	alertModal.find(".modal-body").text(msj);
+	alertModal.modal('show');
+}

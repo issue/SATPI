@@ -4,7 +4,7 @@ function validateIPaddress(value) {
 	if (value.match(ipformat)) {
 		return true;
 	} else {
-		alert("You have entered an invalid IP address! (" + value + ")");
+		showModalAlert("You have entered an invalid IP address! (" + value + ")");
 		return false;
 	}
 }
@@ -166,7 +166,7 @@ function addTableEntry(xmlDoc, tagPath) {
 			} else if (inputTypeName == "number") {
 				entry += addNumberInput(tagPath, input);
 			} else {
-				alert("Not supported input type! (" + inputtype.innerHTML + ")");
+				showModalAlert("Not supported input type! (" + inputtype.innerHTML + ")");
 			}
 		} else {
 			entry += input.innerHTML;
