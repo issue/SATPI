@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-bs-theme="light">
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,6 +10,8 @@
 <title>SAT>IP Main Web Page</title>
 
 <script src="assets/js/menu.js"></script>
+<script src="assets/js/utils.js"></script>
+<script src="assets/js/cookies.js"></script>
 <script src="assets/js/loadxmldoc.js"></script>
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
@@ -65,13 +67,11 @@
 	function restartSatPI() {
 		$('#RestartDialog').modal();
 	}
-
 </script>
 
 </head>
-<body>
+<body onload="getColorMode();">
 <div id="menu"></div>
-
 <!-- Stop Dialog -->
 <div class="modal fade" id="StopDialog">
 	<div class="modal-dialog">
@@ -147,6 +147,15 @@
 	</div>
 </div>
 </div>
-
+<div class="container">
+	<footer class="footer fixed-bottom d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+	  <div class="container text-center">
+		Copyright &#169; 2014 - 2024 Marc Postema
+	  </div>
+	  <!-- ColorMode -->
+		<div class="col align-self-end">
+		<button class="btn btn-info" type="button" onclick="setColorMode();">Toggle Darkmode</button></div>
+	</footer>
+  </div>
 </body>
 </html>

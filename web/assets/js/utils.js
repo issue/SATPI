@@ -33,3 +33,22 @@ function buildStreamURL(xmlDoc, streamID) {
 	url += xmlDoc.querySelector(streamID + "pidcsv").innerHTML;
 	return url;
 }
+
+function setColorMode() {
+	if (document.documentElement.getAttribute('data-bs-theme') == 'dark') {
+		document.documentElement.setAttribute('data-bs-theme','light')
+	}
+	else {
+		document.documentElement.setAttribute('data-bs-theme','dark')
+	}
+	setCookie("colormode", document.documentElement.getAttribute('data-bs-theme'), 365);
+}
+
+function getColorMode() {
+	let colormode = getCookie("colormode");
+	if(colormode !== null){
+		document.documentElement.setAttribute('data-bs-theme', colormode)
+	}else{
+		document.documentElement.setAttribute('data-bs-theme','light') //default to light theme
+	}
+}
