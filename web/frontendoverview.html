@@ -1,136 +1,175 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="assets/css/stylesheet.css">
-<link rel="stylesheet" type="text/css" href="assets/css/fontawesome.min.css">
-<link rel="stylesheet" type="text/css" href="assets/css/solid.min.css">
+<!doctype html>
+<html data-bs-theme="light">
+  <head>
+    <meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>SAT>IP Main Web Page</title>
+		<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/stylesheet.css" rel="stylesheet">
+		<script src="assets/dist/js/jquery.min.js"></script>
+    <script src="assets/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="assets/js/loadxmldoc.js"></script>
+		<script src="assets/js/cookies.js"></script>
+		<script src="assets/js/addtableentry.js"></script>
 
-<title>SAT>IP - Frontend Overview</title>
+		<script>
+			var autoload = 1;
+			var xmlLoaded;
 
-<script src="assets/js/menu.js"></script>
-<script src="assets/js/utils.js"></script>
-<script src="assets/js/cookies.js"></script>
-<script src="assets/js/loadxmldoc.js"></script>
-<script src="assets/js/postxmldoc.js"></script>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/addtableentry.js"></script>
-<script>
-	var autoload = 1;
-	var xmlLoaded;
+			function buildcontent(xmlDoc) {
+				var page = "";
+				var streams = xmlDoc.getElementsByTagName("streamindex");
+				if (streams.length > 0) {
+					var size = streams.length;
+					for (index = 1; index <= size; index++) {
+						var streamID = "stream" + index + " ";
+						var visibleStream = xmlDoc.getElementsByTagName("stream" + index)[0];
+						var attached = xmlDoc.querySelector(streamID + "attached").innerHTML;
+						var status = xmlDoc.querySelector(streamID + "status").innerHTML;
+						if (attached == "yes") {
+							if (status == 31) {
+								page += '<tr class="table-success">';
+							} else {
+								page += '<tr class="table-info">';
+							}
+						} else {
+							page += "<tr>";
+						}
+						// Add shortcut to Frontend Info Pages
+						page += '<td align="left"> <a href="frontend.html#' + streamID + '">' + xmlDoc.querySelector(streamID + 'streamindex').innerHTML + '</a></td>';
+						page += addTableEntry(xmlDoc, streamID + "enable");
+						page += addTableEntry(xmlDoc, streamID + "frontendname");
+						page += addTableEntry(xmlDoc, streamID + "type");
+						page += addTableEntry(xmlDoc, streamID + "owner");
+						page += addTableEntry(xmlDoc, streamID + "spc");
+						page += addTableEntry(xmlDoc, streamID + "totalCCErrors");
+						var input = xmlDoc.querySelector(streamID + "tunefreq");
+						if (input) {
+							page += addTableEntry(xmlDoc, streamID + "tunefreq");
+						} else {
+							page += addTableEntry(xmlDoc, streamID + " transformation " + "transformFreq");
+						}
 
-	function buildcontent(xmlDoc) {
-		var page = "";
-		var streams = xmlDoc.getElementsByTagName("streamindex");
-		if (streams.length > 0) {
-			var size = streams.length;
-			for (index = 1; index <= size; index++) {
-				var streamID = "stream" + index + " ";
-				var visibleStream = xmlDoc.getElementsByTagName("stream" + index)[0];
-				var attached = xmlDoc.querySelector(streamID + "attached").innerHTML;
-				var status = xmlDoc.querySelector(streamID + "status").innerHTML;
-				if (attached == "yes") {
-					if (status == 31) {
-						page += '<tr class="table-success">';
-					} else {
-						page += '<tr class="table-info">';
+						page += addTableEntry(xmlDoc, streamID + "delsys");
+						page += addTableEntry(xmlDoc, streamID + "pathname");
+						page += addTableEntry(xmlDoc, streamID + "networkname");
+						page += addTableEntry(xmlDoc, streamID + "channelname");
+						page += "</tr>";
 					}
-				} else {
-					page += "<tr>";
 				}
-				// Add shortcut to Frontend Info Pages
-				page += '<td align="left"> <a href="frontend.html#' + streamID + '">' + xmlDoc.querySelector(streamID + 'streamindex').innerHTML + '</a></td>';
-				page += addTableEntry(xmlDoc, streamID + "enable");
-				page += addTableEntry(xmlDoc, streamID + "frontendname");
-				page += addTableEntry(xmlDoc, streamID + "type");
-				page += addTableEntry(xmlDoc, streamID + "owner");
-				page += addTableEntry(xmlDoc, streamID + "spc");
-				page += addTableEntry(xmlDoc, streamID + "totalCCErrors");
-				var input = xmlDoc.querySelector(streamID + "tunefreq");
-				if (input) {
-					page += addTableEntry(xmlDoc, streamID + "tunefreq");
-				} else {
-					page += addTableEntry(xmlDoc, streamID + " transformation " + "transformFreq");
-				}
-
-				page += addTableEntry(xmlDoc, streamID + "delsys");
-				page += addTableEntry(xmlDoc, streamID + "pathname");
-				page += addTableEntry(xmlDoc, streamID + "networkname");
-				page += addTableEntry(xmlDoc, streamID + "channelname");
-				page += "</tr>";
+				return page;
 			}
-		}
-		return page;
-	}
 
-	function updatePage() {
-		loadXMLDoc("SatPI.xml");
-	}
+			function updatePage() {
+				loadXMLDoc("SatPI.xml");
+			}
 
-	// function called when xml is loaded
-	function xmlloaded(xml) {
-		if (autoload == 1) {
-			xmlLoaded = xml;
-			document.getElementById("body").innerHTML = buildcontent(xml);
-//			$('#body').append('<tr class="table-info"><td align="left">' + '5' + '</td><td/></tr>');
-		}
-	}
-</script>
-
-</head>
-<body onload="getColorMode();">
-<div id="menu"></div>
-
-<div class="p-1">
-<div class="window-start container border rounded-bottom">
-	<div class="window-name">
-		<p>Frontend Overview</p>
-	</div>
-	<div class="p-1 table-responsive table-text-size">
-		<table class="table table-bordered table-sm">
-			<thead class="thead-light"><tr>
-				<th class="col-xs-1">#</th>
-				<th class="col-xs-1">Enable</th>
-				<th class="col-xs-1">Name</th>
-				<th class="col-xs-1">Type</th>
-				<th class="col-xs-1">Owner</th>
-				<th class="col-xs-1">Packets</th>
-				<th class="col-xs-1">CC Error</th>
-				<th class="col-xs-1">Frequency (kHz)</th>
-				<th class="col-xs-1">Delivery System</th>
-				<th class="col-xs-3">Path</th>
-				<th class="col-xs-3">Network Name</th>
-				<th class="col-xs-3">Channel Name</th>
-			</tr></thead>
-			<tbody id="body"></tbody>
-		</table>
-	</div>
-	<script>
-		// make menu
-		document.getElementById("menu").innerHTML = buildmenu();
-		setMenuItemActive("frontendoverview");
-
-		updatePage();
+			// function called when xml is loaded
+			function onXMLLoaded(xml) {
+				if (autoload == 1) {
+					xmlLoaded = xml;
+					document.getElementById("body").innerHTML = buildcontent(xml);
+				}
+			}
+			updatePage();
 
 		// Call the ajax refresh each refresh_time seconds
 		var refresh_time = 2000;
 		setInterval("updatePage()", refresh_time);
+		</script>
+  </head>
+  <body>
 
-	</script>
-</div>
-</div>
-<div class="container">
-	<footer class="footer fixed-bottom d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-	  <div class="container text-center">
-		Copyright &#169; 2014 - 2024 Marc Postema
-	  </div>
-	  <!-- ColorMode -->
-		<div class="col align-self-end">
-		<button class="btn btn-info" type="button" onclick="setColorMode();">Toggle Darkmode</button></div>
-	</footer>
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">SatPI</a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
   </div>
-</body>
-</html>
+</header>
 
+<div class="container-fluid">
+  <div class="row">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+      <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="index.html">
+              <span class="bi bi-house-fill" data-feather="home"></span>
+              Server Info
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="log.html">
+              <span class="bi bi-list-columns" data-feather="log"></span>
+							Log
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="frontendoverview.html">
+              <span class="bi bi-binoculars-fill" data-feather="frontend-overview"></span>
+              Frontend Overview
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="frontend.html#">
+              <span class="bi bi-list" data-feather="frontend"></span>
+							Frontend
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="config.html">
+              <span class="bi bi-gear-wide-connected" data-feather="configure"></span>
+							Configure
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contact.html">
+              <span class="bi bi-person-vcard-fill" data-feather="contact"></span>
+							Contact
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="about.html">
+              <span class="bi bi-info-circle-fill" data-feather="about"></span>
+							About
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/Barracuda09/SATPI/wiki" target="_blank" rel="noopener noreferrer">
+              <span class="bi bi-wikipedia" data-feather="wiki"></span>
+							Wiki
+            </a>
+          </li>
+        </ul>
+    </nav>
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Frontend Overview</h1>
+      </div>
+			<div class="p-1 table-responsive table-text-size">
+				<table class="table table-bordered table-sm">
+					<thead class="thead-light"><tr>
+						<th class="col-xs-1">#</th>
+						<th class="col-xs-1">Enable</th>
+						<th class="col-xs-1">Name</th>
+						<th class="col-xs-1">Type</th>
+						<th class="col-xs-1">Owner</th>
+						<th class="col-xs-1">Packets</th>
+						<th class="col-xs-1">CC Error</th>
+						<th class="col-xs-1">Frequency (kHz)</th>
+						<th class="col-xs-1">Delivery System</th>
+						<th class="col-xs-3">Path</th>
+						<th class="col-xs-3">Network Name</th>
+						<th class="col-xs-3">Channel Name</th>
+					</tr></thead>
+					<tbody id="body"></tbody>
+				</table>
+			</div>
+    </main>
+  </div>
+</div>
+  </body>
+</html>

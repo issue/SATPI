@@ -1,5 +1,3 @@
-let xmlLoaded
-let filename
 async function loadXMLDoc(url) {
 fetch(url)
     .then(response => {
@@ -11,9 +9,7 @@ fetch(url)
     .then(xmlText => {
         const xmlParser = new DOMParser();
         const xmlDoc = xmlParser.parseFromString(xmlText,'text/xml');
-				xmlLoaded = xmlDoc;
-				filename = url;
-				xmlloaded(xmlDoc);
+				onXMLLoaded(xmlDoc);
     })
     .catch(error => {
         console.error(`There was a problem during the fetch operation:`, error);
