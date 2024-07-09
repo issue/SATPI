@@ -1,43 +1,34 @@
-var xmlLoaded;
-var filename;
-function loadXMLDoc(file) {
-	if (window.XMLHttpRequest) {
-		xmlhttp = new XMLHttpRequest();
-	} else if (window.ActiveXObject) {
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	} else {
-		throw new Error("Ajax is not supported by this browser");
-	}
-
-	// callback function
-	xmlhttp.onreadystatechange = function() {
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			filename = file;
-			xmlLoaded = xmlhttp.responseXML;
-			xmlloaded(xmlhttp.responseXML);
-		}
-	}
-
-	xmlhttp.open("GET", file, true);
-	xmlhttp.send();
+let xmlLoaded
+let filename
+async function loadXMLDoc(url) {
+fetch(url)
+    .then(response => {
+        if (!response.ok) {
+					throw new Error(`Response status: ${response.status}`);
+        }
+        return response.text();
+    })
+    .then(xmlText => {
+        const xmlParser = new DOMParser();
+        const xmlDoc = xmlParser.parseFromString(xmlText,'text/xml');
+				xmlLoaded = xmlDoc;
+				filename = url;
+				xmlloaded(xmlDoc);
+    })
+    .catch(error => {
+        console.error(`There was a problem during the fetch operation:`, error);
+    });
 }
 
-function loadJSONDoc(filename) {
-	if (window.XMLHttpRequest) {
-		jsonhttp = new XMLHttpRequest();
-	} else if (window.ActiveXObject) {
-		jsonhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	} else {
-		throw new Error("Ajax is not supported by this browser");
+async function loadJSONDoc(url) {
+try {
+	const response = await fetch(url);
+	if (!response.ok) {
+		throw new Error(`Response status: ${response.status}`);
 	}
-
-	// callback function
-	jsonhttp.onreadystatechange = function() {
-		if (jsonhttp.readyState == 4 && jsonhttp.status == 200) {
-			jsonloaded(jsonhttp.responseText);
-		}
+	const json = await response.json();
+	jsonloaded(JSON.stringify(json));
+} catch (error) {
+	console.error(error.message);
 	}
-
-	jsonhttp.open("GET", filename, true);
-	jsonhttp.send();
 }

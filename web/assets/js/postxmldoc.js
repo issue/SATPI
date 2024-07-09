@@ -1,4 +1,4 @@
-function postData(filename, data) {
+function postData1(filename, data) {
 	//refresh_time = 2000;
 	if (window.XMLHttpRequest) {
 		xmlhttp_post = new XMLHttpRequest();
@@ -21,4 +21,26 @@ function postData(filename, data) {
 	xmlhttp_post.open("POST", filename);
 	xmlhttp_post.setRequestHeader("Content-Type", "text/xml");
 	xmlhttp_post.send(data);
+}
+
+async function postData(url, data) {
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/xml',
+      },
+      body: data,
+    });
+
+
+    if (response.ok) {
+      const result = await response;
+      console.log('Success:', result);
+    } else {
+      console.error('Error:', response.status, response.statusText);
+    }
+  } catch (error) {
+    console.error(`There was a problem during the fetch operation:`, error);
+  }
 }
