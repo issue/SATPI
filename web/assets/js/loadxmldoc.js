@@ -1,3 +1,6 @@
+var xmlLoaded;
+var filename;
+
 async function loadXMLDoc(url) {
 fetch(url)
     .then(response => {
@@ -9,6 +12,8 @@ fetch(url)
     .then(xmlText => {
         const xmlParser = new DOMParser();
         const xmlDoc = xmlParser.parseFromString(xmlText,'text/xml');
+				filename = url;
+				xmlLoaded = xmlDoc;
 				onXMLLoaded(xmlDoc);
     })
     .catch(error => {

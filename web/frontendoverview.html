@@ -10,6 +10,7 @@
 		<script src="assets/dist/js/jquery.min.js"></script>
     <script src="assets/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="assets/js/loadxmldoc.js"></script>
+		<script src="assets/js/postxmldoc.js"></script>
 		<script src="assets/js/cookies.js"></script>
 		<script src="assets/js/addtableentry.js"></script>
 
@@ -70,6 +71,7 @@
 				if (autoload == 1) {
 					xmlLoaded = xml;
 					document.getElementById("body").innerHTML = buildcontent(xml);
+					console.log("xml loaded");
 				}
 			}
 			updatePage();

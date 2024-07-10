@@ -10,17 +10,19 @@ function validateIPaddress(value) {
 }
 
 function myOnkeyPressPost(tagPath, value, event) {
-	var key = event.which;
+	var key = KeyboardEvent.which;
 	if (key == 13) {
 		changeXMLAndPost(tagPath, value);
 	}
 }
 
 function myOnkeyPressPostIp(tagPath, value, event) {
-	var key = event.which;
+	var key = KeyboardEvent.which;
 	if (key == 13) {
-		if (validateIPaddress(value) == true) {
+		if (validateIPaddress(value) == "true") {
 			changeXMLAndPost(tagPath, value);
+		} else {
+			console.log("Invalid IP");
 		}
 	}
 }
